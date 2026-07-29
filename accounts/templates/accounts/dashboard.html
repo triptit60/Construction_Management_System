@@ -1,0 +1,368 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <h2 class="mb-4">
+        Welcome Back, {{ request.user.first_name }} 👋
+    </h2>
+
+    <div class="row">
+
+        <div class="col-md-3 mb-4">
+            <div class="card shadow border-0">
+                <div class="card-body">
+                    <h6>🏗 Active Projects</h6>
+                    <h2>{{ total_projects }}</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-4">
+    <div class="card shadow border-0">
+        <div class="card-body">
+            <h6>📋 Tasks</h6>
+            <h2>{{ total_tasks }}</h2>
+        </div>
+    </div>
+</div>
+
+        <div class="col-md-3 mb-4">
+            <div class="card shadow border-0">
+                <div class="card-body">
+                    <h6>📦 Inventory</h6>
+                    <h2>{{ total_items }}</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-4">
+            <div class="card shadow border-0">
+                <div class="card-body">
+                    <h6>💰 Expenses</h6>
+                    <h2>£{{ total_expenses }}</h2>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <div class="col-lg-8 mb-4">
+
+            <div class="card shadow">
+
+                <div class="card-header">
+
+                    Project Progress
+
+                </div>
+
+                <div class="card-body">
+
+                    <canvas id="projectChart"></canvas>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-4 mb-4">
+
+            <div class="card shadow">
+
+                <div class="card-header">
+
+                    Quick Actions
+
+                </div>
+
+                <div class="card-body d-grid gap-2">
+
+                    <a href="#" class="btn btn-primary">New Project</a>
+
+                    <a href="#" class="btn btn-success">Add Employee</a>
+
+                    <a href="#" class="btn btn-warning">Add Material</a>
+
+                    <a href="#" class="btn btn-danger">Record Expense</a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <div class="col-lg-6">
+
+            <div class="card shadow">
+
+        
+
+                
+    <div class="card-header">
+    Recent Expenses
+</div>
+
+<div class="card-body">
+
+    <ul class="list-group list-group-flush">
+
+        {% for expense in recent_expenses %}
+
+        <li class="list-group-item">
+
+            <strong>{{ expense.project.name }}</strong>
+
+            spent
+
+            £{{ expense.amount }}
+
+            for
+
+            {{ expense.get_category_display }}
+
+        </li>
+
+        {% empty %}
+
+        <li class="list-group-item">
+
+            No recent expenses.
+
+        </li>
+
+        {% endfor %}
+
+    </ul>
+
+</div>
+
+
+                <div class="card-body">
+
+                                    <ul class="list-group">
+
+{% for activity in recent_activities %}
+
+<li class="list-group-item d-flex justify-content-between">
+
+<div>
+
+<strong>{{ activity.user.get_full_name|default:activity.user.username }}</strong>
+
+{{ activity.message }}
+
+</div>
+
+<small class="text-muted">
+
+{{ activity.created_at|timesince }} ago
+
+</small>
+
+</li>
+
+{% empty %}
+
+<li class="list-group-item text-center">
+
+No recent activities.
+
+</li>
+
+{% endfor %}
+
+</ul>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-6">
+
+            <div class="card shadow">
+
+                <div class="card-header">
+
+                                 <tbody>
+
+{% for project in recent_projects %}
+
+<tr>
+
+    <td>{{ project.name }}</td>
+
+    <td>
+
+        {% if project.status == "COMPLETED" %}
+
+            <span class="badge bg-success">
+                Completed
+            </span>
+
+        {% elif project.status == "IN_PROGRESS" %}
+
+            <span class="badge bg-primary">
+                In Progress
+            </span>
+
+        {% elif project.status == "ON_HOLD" %}
+
+            <span class="badge bg-warning">
+                On Hold
+            </span>
+
+        {% else %}
+
+            <span class="badge bg-secondary">
+                Planning
+            </span>
+
+        {% endif %}
+
+    </td>
+
+</tr>
+
+{% empty %}
+
+<tr>
+
+<td colspan="2">
+
+No projects available.
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+                </div>
+
+                <div class="card-body">
+
+                        <table class="table table-hover">
+
+<thead>
+
+<tr>
+
+<th>Project</th>
+
+<th>Manager</th>
+
+<th>Status</th>
+
+<th>Start Date</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for project in recent_projects %}
+
+<tr>
+
+<td>{{ project.name }}</td>
+
+<td>{{ project.manager.get_full_name|default:project.manager.username }}</td>
+
+<td>
+
+{% if project.status == "IN_PROGRESS" %}
+<span class="badge bg-success">In Progress</span>
+
+{% elif project.status == "PLANNING" %}
+<span class="badge bg-primary">Planning</span>
+
+{% elif project.status == "ON_HOLD" %}
+<span class="badge bg-warning text-dark">On Hold</span>
+
+{% else %}
+<span class="badge bg-dark">Completed</span>
+
+{% endif %}
+
+</td>
+
+<td>{{ project.start_date }}</td>
+
+</tr>
+
+{% empty %}
+
+<tr>
+
+<td colspan="4" class="text-center">
+No projects found.
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>  
+                    
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+const ctx=document.getElementById('projectChart');
+
+new Chart(ctx,{
+type:'line',
+data:{
+labels:['Jan','Feb','Mar','Apr','May','Jun'],
+datasets:[{
+
+labels: {{ chart_labels|safe }},
+
+datasets: [{
+    label: "Projects",
+    data: {{ chart_data|safe }},
+    borderWidth:2,
+    fill:false,
+    tension:.3
+}]
+
+fill:false,
+tension:.3
+}]
+}
+});
+
+</script>
+
+{% endblock %}

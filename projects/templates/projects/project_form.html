@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}
+{% if form.instance.pk %}
+Edit Project
+{% else %}
+Create Project
+{% endif %}
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header">
+            <h4 class="mb-0">
+                {% if form.instance.pk %}
+                    Edit Project
+                {% else %}
+                    Create New Project
+                {% endif %}
+            </h4>
+        </div>
+
+        <div class="card-body">
+
+            <form method="POST"  enctype="multipart/form-data">
+
+                {% csrf_token %}
+
+                        {% if form.errors %}
+<div class="alert alert-danger">
+    {{ form.errors }}
+</div>
+{% endif %}
+             
+
+                {{ form.as_p }}
+
+                <div class="mt-3">
+
+                    <button type="submit" class="btn btn-success">
+                        Save Project
+                    </button>
+
+                    <a href="{% url 'project_list' %}"
+                       class="btn btn-secondary">
+                        Cancel
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

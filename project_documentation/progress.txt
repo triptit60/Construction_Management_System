@@ -1,0 +1,18 @@
+               ---Completed in day 1-----
+Authentication
+
+You've already built:
+
+✅ UserProfile model
+✅ SignUpForm
+✅ Registration view
+✅ Registration URL
+✅ Login settings
+
+What's left:
+
+Login page
+Logout
+Dashboard
+Role-based redirects
+Profile page
