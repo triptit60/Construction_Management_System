@@ -1,5 +1,5 @@
 from django import forms
-from .models import Project
+from .models import Project,Task
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
@@ -32,3 +32,28 @@ class ProjectForm(forms.ModelForm):
             )
 
         return cleaned_data
+
+
+class TaskForm(forms.ModelForm):
+    class Meta:
+        model = Task
+        fields = [
+            "title",
+            "description",
+            "assigned_to",
+            "priority",
+            "due_date",
+            "is_completed",
+        ]
+
+        widgets = {
+            "description": forms.Textarea(attrs={
+                "class": "form-control",
+                "rows": 4,
+            }),
+
+            "due_date": forms.DateInput(attrs={
+                "type": "date",
+                "class": "form-control",
+            }),
+        }

@@ -16,3 +16,25 @@ Logout
 Dashboard
 Role-based redirects
 Profile page
+
+-------------------------Completed in Day 2 ---------------------------------
+*Authentication
+User registration
+Login/Logout
+UserProfile
+Dashboard
+
+*Projects
+Create
+List
+Detail
+Dashboard
+Update
+Delete
+
+*Tasks
+Create
+List
+Detail
+Update
+Delete

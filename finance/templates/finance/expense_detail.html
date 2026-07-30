@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}
+Expense Details
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="card">
+
+        <div class="card-header">
+            <h3>Expense Details</h3>
+        </div>
+
+        <div class="card-body">
+
+            <table class="table">
+
+                <tr>
+                    <th>Project</th>
+                    <td>{{ expense.project.name }}</td>
+                </tr>
+
+                <tr>
+                    <th>Category</th>
+                    <td>{{ expense.get_category_display }}</td>
+                </tr>
+
+                <tr>
+                    <th>Amount</th>
+                    <td>Rs. {{ expense.amount }}</td>
+                </tr>
+
+                <tr>
+                    <th>Date Incurred</th>
+                    <td>{{ expense.date_incurred }}</td>
+                </tr>
+
+                <tr>
+                    <th>Description</th>
+                    <td>{{ expense.description|default:"-" }}</td>
+                </tr>
+
+                <tr>
+                    <th>Logged By</th>
+                    <td>{{ expense.logged_by }}</td>
+                </tr>
+
+                <tr>
+                    <th>Created At</th>
+                    <td>{{ expense.created_at }}</td>
+                </tr>
+
+            </table>
+
+            <a href="{% url 'expense_list' %}" class="btn btn-secondary">
+                Back
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

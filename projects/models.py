@@ -1,3 +1,6 @@
+
+from django.utils import timezone
+timezone.now
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -25,15 +28,25 @@ class Project(models.Model):
     def __str__(self):
         return self.name
 
+
 class Task(models.Model):
-    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='tasks')
-    title = models.CharField(max_length=200)
-    assigned_to = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    PRIORITY_CHOICES = [
+        ("LOW", "Low"),
+        ("MEDIUM", "Medium"),
+        ("HIGH", "High"),
+    ]
+    project = models.ForeignKey(Project,on_delete=models.CASCADE,related_name="tasks")
+    title = models.CharField(max_length=200,)
+    description = models.TextField(blank=True)
+    assigned_to = models.ForeignKey(User,on_delete=models.SET_NULL,null=True,blank=True)
+    priority = models.CharField(max_length=10,choices=PRIORITY_CHOICES,default="MEDIUM")
     is_completed = models.BooleanField(default=False)
     due_date = models.DateField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.title} ({self.project.name})"
+        return self.title
 
 
 

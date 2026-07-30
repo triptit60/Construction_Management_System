@@ -1,0 +1,216 @@
+{% extends "base.html" %}
+
+{% block title %}
+Project Dashboard
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h2>{{ project.name }}</h2>
+
+            <p class="text-muted mb-0">
+                {{ project.project_code }}
+            </p>
+        </div>
+
+        <div>
+
+            <a href="{% url 'project_detail' project.pk %}"
+               class="btn btn-outline-secondary">
+
+                Project Details
+
+            </a>
+
+            <a href="{% url 'project_update' project.pk %}"
+               class="btn btn-warning">
+
+                Edit
+
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="row mt-4">
+
+    <div class="col-md-3 mb-3">
+        <div class="card shadow-sm text-center">
+            <div class="card-body">
+                <h6>Total Tasks</h6>
+                <h2>{{ total_tasks }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+        <div class="card shadow-sm text-center">
+            <div class="card-body">
+                <h6>Completed</h6>
+                <h2>{{ completed_tasks }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+        <div class="card shadow-sm text-center">
+            <div class="card-body">
+                <h6>Pending</h6>
+                <h2>{{ pending_tasks }}</h2>
+            </div>
+        </div>
+    </div>
+
+
+       <div class="col-md-3 mb-3">
+         <div class="card shadow-sm text-center">
+             <div class="card-body">
+                 <h6>Progress</h6>
+                <h2>{{ progress }}%</h2>
+             </div>
+          </div>
+       </div>
+
+       </div>  <!-- closes <div class="row mt-4"> -->
+
+    <div class="card shadow-sm mt-4">
+    <div class="card-header">
+        <strong>Project Progress</strong>
+    </div>
+
+    <div class="card-body">
+
+        <div class="progress" style="height:25px;">
+
+            <div class="progress-bar"
+                 role="progressbar"
+                 style="width: {{ progress }}%;"
+                 aria-valuenow="{{ progress }}"
+                 aria-valuemin="0"
+                 aria-valuemax="100">
+
+                {{ progress }}%
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+   
+<div class="card shadow-sm mt-4">
+
+    <div class="card-header">
+        <strong>Recent Tasks</strong>
+    </div>
+
+    <div class="card-body">
+
+        {% if recent_tasks %}
+
+            <ul class="list-group">
+
+                {% for task in recent_tasks %}
+
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+
+                        <a href="{% url 'task_detail' project.id task.id %}">
+                            {{ task.title }}
+                        </a>
+
+                        {% if task.is_completed %}
+                            <span class="badge bg-success">Completed</span>
+                        {% else %}
+                            <span class="badge bg-warning text-dark">Pending</span>
+                        {% endif %}
+
+                    </li>
+
+                {% endfor %}
+
+            </ul>
+
+        {% else %}
+
+            <p class="text-muted">No recent tasks.</p>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+                      <div class="card shadow-sm mt-4">
+
+    <div class="card-header">
+        <strong>Upcoming Deadlines</strong>
+    </div>
+
+    <div class="card-body">
+
+        {% if upcoming_tasks %}
+
+            <table class="table table-hover">
+
+                <thead>
+                    <tr>
+                        <th>Task</th>
+                        <th>Due Date</th>
+                        <th>Priority</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    {% for task in upcoming_tasks %}
+
+                    <tr>
+
+                        <td>
+                            <a href="{% url 'task_detail' project.id task.id %}">
+                                {{ task.title }}
+                            </a>
+                        </td>
+
+                        <td>{{ task.due_date }}</td>
+
+                        <td>
+                            {% if task.priority == "HIGH" %}
+                                <span class="badge bg-danger">High</span>
+                            {% elif task.priority == "MEDIUM" %}
+                                <span class="badge bg-warning text-dark">Medium</span>
+                            {% else %}
+                                <span class="badge bg-success">Low</span>
+                            {% endif %}
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        {% else %}
+
+            <p class="text-muted">No upcoming deadlines.</p>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}
