@@ -38,3 +38,12 @@ List
 Detail
 Update
 Delete
+
+-------------------------------Completed in Day 3------------------------------
+Completed Modules
+Authentication & User Management
+Projects
+Tasks
+Expenses
+Inventory CRUD
+

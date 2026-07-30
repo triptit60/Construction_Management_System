@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}
+Inventory Form
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header">
+
+            {% if form.instance.pk %}
+                Edit Inventory
+            {% else %}
+                Add Inventory Item
+            {% endif %}
+
+        </div>
+
+        <div class="card-body">
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+                {{ form.as_p }}
+
+                <button class="btn btn-success">
+                    Save
+                </button>
+
+                <a href="{% url 'inventory_list' %}"
+                   class="btn btn-secondary">
+                    Cancel
+                </a>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

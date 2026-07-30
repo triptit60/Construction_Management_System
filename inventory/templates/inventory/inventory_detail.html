@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}
+Inventory Details
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header">
+            {{ item.name }}
+        </div>
+
+        <div class="card-body">
+
+            <p><strong>Project:</strong> {{ item.project }}</p>
+
+            <p><strong>Supplier:</strong> {{ item.supplier }}</p>
+
+            <p><strong>Quantity:</strong> {{ item.quantity }}</p>
+
+            <p><strong>Unit:</strong> {{ item.unit }}</p>
+
+            <p><strong>Unit Price:</strong> Rs. {{ item.unit_price }}</p>
+
+            <p><strong>Total Value:</strong> Rs. {{ item.total_value }}</p>
+
+            <p><strong>Created:</strong> {{ item.created_at }}</p>
+
+            <p><strong>Updated:</strong> {{ item.updated_at }}</p>
+
+            <a href="{% url 'inventory_update' item.id %}"
+               class="btn btn-warning">
+                Edit
+            </a>
+
+            <a href="{% url 'inventory_delete' item.id %}"
+               class="btn btn-danger">
+                Delete
+            </a>
+
+            <a href="{% url 'inventory_list' %}"
+               class="btn btn-secondary">
+                Back
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

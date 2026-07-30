@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}
+Delete Inventory
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-danger text-white">
+            Delete Inventory Item
+        </div>
+
+        <div class="card-body">
+
+            <p>
+                Are you sure you want to delete
+                <strong>{{ item.name }}</strong>?
+            </p>
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+                <button class="btn btn-danger">
+                    Yes, Delete
+                </button>
+
+                <a href="{% url 'inventory_detail' item.id %}"
+                   class="btn btn-secondary">
+                    Cancel
+                </a>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

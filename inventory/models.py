@@ -1,4 +1,5 @@
 from django.db import models
+from projects.models import Project
 
 class Supplier(models.Model):
     name = models.CharField(max_length=200)
@@ -16,6 +17,17 @@ class InventoryItem(models.Model):
     quantity = models.PositiveIntegerField(default=0)
     unit = models.CharField(max_length=50, help_text="e.g., bags, tons, units")
     unit_price = models.DecimalField(max_digits=12, decimal_places=2)
+    project = models.ForeignKey(Project,on_delete=models.CASCADE,related_name="inventory_items",null=True,blank=True)
+    low_stock_threshold = models.PositiveIntegerField(default=10)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def total_value(self):
+        return self.quantity * self.unit_price
+
+    @property
+    def is_low_stock(self):
+        return self.quantity <= self.low_stock_threshold
 
     def __str__(self):
         return self.name
