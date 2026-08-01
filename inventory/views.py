@@ -2,16 +2,104 @@ from django.shortcuts import render
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
+from django.shortcuts import render, redirect
+from .forms import InventoryTransactionForm
 
 from .forms import InventoryForm
-from .models import InventoryItem
+from .models import InventoryItem,InventoryTransaction
+from django.db.models import F
 # Create your views here.
+
+@login_required
+def inventory_detail(request, pk):
+    item = get_object_or_404(InventoryItem, pk=pk)
+
+    transactions = (InventoryTransaction.objects.filter(item=item).order_by("-created_at"))
+    context = {"item": item,"transactions": transactions,}
+    return render(request, "inventory/inventory_detail.html", context)
+
+@login_required
+def transaction_create(request):
+    if request.method == "POST":
+        form = InventoryTransactionForm(request.POST)
+
+        if form.is_valid():
+            transaction = form.save(commit=False)
+            item = transaction.item
+
+            # Stock In
+            if transaction.transaction_type == "IN":
+                item.quantity += transaction.quantity
+
+            # Stock Out
+            elif transaction.transaction_type == "OUT":
+                if item.quantity < transaction.quantity:
+                    messages.error(request, "Not enough stock available.")
+                    return render(request, "inventory/transaction_form.html", {"form": form})
+
+                item.quantity -= transaction.quantity
+
+            # Save updated quantity
+            item.save()
+
+            # Save transaction
+            transaction.save()
+            messages.success(request, "Inventory transaction recorded successfully!")
+            return redirect("inventory_list")
+
+    else:
+        form = InventoryTransactionForm()
+    return render(request, "inventory/transaction_form.html", {"form": form})
+
+
+@login_required
+def transaction_list(request):
+    transactions = InventoryTransaction.objects.select_related("item").order_by("-created_at")
+
+    return render(request, "inventory/transaction_list.html", {
+        "transactions": transactions,})
+
+
+@login_required
+def inventory_dashboard(request):
+    items = InventoryItem.objects.all()
+
+    total_materials = items.count()
+
+    low_stock_items = items.filter(
+        quantity__lte=F("low_stock_threshold")
+    )
+
+    total_inventory_value = sum(
+        item.total_value() for item in items
+    )
+
+    recent_items = items.order_by("-created_at")[:5]
+
+    context = {
+        "total_materials": total_materials,
+        "low_stock_count": low_stock_items.count(),
+        "low_stock_items": low_stock_items,
+        "recent_items": recent_items,
+        "total_inventory_value": total_inventory_value,
+    }
+    return render( request,"inventory/inventory_dashboard.html",context,)
+
 
 
 @login_required
 def inventory_list(request):
     items = InventoryItem.objects.all().order_by("-created_at")
-    return render(request, "inventory/inventory_list.html", {"items": items})
+    total_materials = items.count()
+    low_stock_count = items.filter(quantity__lte=F("low_stock_threshold")).count()
+    total_inventory_value = sum(item.total_value() for item in items)
+    context = {
+        "items": items,
+        "total_materials": total_materials,
+        "low_stock_count": low_stock_count,
+        "total_inventory_value": total_inventory_value,
+    }
+    return render(request, "inventory/inventory_list.html", context)
 
 
 @login_required
@@ -65,3 +153,6 @@ def inventory_delete(request, pk):
         return redirect("inventory_list")
 
     return render(request,"inventory/inventory_confirm_delete.html", {"item": item})
+
+
+    

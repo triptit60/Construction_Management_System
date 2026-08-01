@@ -1,6 +1,20 @@
 from django import forms
 from .models import InventoryItem
+from django import forms
+from .models import InventoryTransaction
 
+class InventoryTransactionForm(forms.ModelForm):
+    class Meta:
+        model = InventoryTransaction
+        fields = [
+            "item",
+            "transaction_type",
+            "quantity",
+            "notes",
+        ]
+        widgets = {
+            "notes": forms.Textarea(attrs={"rows": 3}),
+        }
 
 class InventoryForm(forms.ModelForm):
     class Meta:

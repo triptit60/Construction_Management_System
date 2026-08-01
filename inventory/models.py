@@ -21,6 +21,7 @@ class InventoryItem(models.Model):
     low_stock_threshold = models.PositiveIntegerField(default=10)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    
 
     def total_value(self):
         return self.quantity * self.unit_price
@@ -31,3 +32,18 @@ class InventoryItem(models.Model):
 
     def __str__(self):
         return self.name
+
+#For inventory Transcation
+class InventoryTransaction(models.Model):
+    TRANSACTION_TYPES = [
+        ("IN", "Stock In"),
+        ("OUT", "Stock Out"),
+    ]
+    item = models.ForeignKey(InventoryItem,on_delete=models.CASCADE,related_name="transactions")
+    transaction_type = models.CharField(max_length=3,choices=TRANSACTION_TYPES)
+    quantity = models.PositiveIntegerField()
+    notes = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.item.name} - {self.transaction_type} ({self.quantity})"

@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+
+{% block title %}
+Inventory Dashboard
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+    
+    <a href="{% url 'inventory_list' %}" class="btn btn-primary">
+    📦 View Materials
+</a>
+
+    <h2 class="mb-4">Inventory Dashboard</h2>
+
+    <div class="row g-4">
+
+        <div class="col-md-4">
+            <div class="card bg-primary text-white shadow">
+                <div class="card-body text-center">
+                    <h5>Total Materials</h5>
+                    <h2>{{ total_materials }}</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card bg-danger text-white shadow">
+                <div class="card-body text-center">
+                    <h5>Low Stock Items</h5>
+                    <h2>{{ low_stock_count }}</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card bg-success text-white shadow">
+                <div class="card-body text-center">
+                    <h5>Total Inventory Value</h5>
+                    <h2>NPR {{ total_inventory_value }}</h2>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row mt-4">
+
+    <div class="col-md-6">
+        <a href="{% url 'inventory_create' %}" class="btn btn-primary w-100">
+            + Add Material
+        </a>
+    </div>
+
+    <div class="col-md-6">
+        <a href="{% url 'inventory_list' %}" class="btn btn-outline-primary w-100">
+            View Materials
+        </a>
+    </div>
+
+ <div class="col-md-6">
+    <a href="{% url 'transaction_list' %}" class="btn btn-info">
+    View Transactions
+</div>
+</a>
+
+</div>
+
+<div class="card mt-4 shadow-sm">
+
+    <div class="card-header bg-danger text-white">
+        Low Stock Materials
+    </div>
+
+    <div class="card-body">
+
+        {% if low_stock_items %}
+
+            <ul class="list-group">
+
+                {% for item in low_stock_items %}
+
+                    <li class="list-group-item d-flex justify-content-between">
+
+                        {{ item.name }}
+
+                        <span class="badge bg-danger">
+
+                            {{ item.quantity }} / {{ item.low_stock_threshold }}
+
+                        </span>
+
+                    </li>
+
+                {% endfor %}
+
+            </ul>
+
+        {% else %}
+
+            <p class="text-success mb-0">
+                No low stock materials 🎉
+            </p>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+<div class="card mt-4 shadow-sm">
+
+    <div class="card-header">
+        Recently Added Materials
+    </div>
+
+    <div class="card-body">
+
+        <table class="table">
+
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Quantity</th>
+                    <th>Project</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for item in recent_items %}
+
+                <tr>
+
+                    <td>{{ item.name }}</td>
+
+                    <td>{{ item.quantity }}</td>
+
+                    <td>{{ item.project }}</td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+
+                    <td colspan="3">
+                        No materials found.
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+</div>
+
+{% endblock %}

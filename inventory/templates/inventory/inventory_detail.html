@@ -47,6 +47,13 @@ Inventory Details
                 Back
             </a>
 
+            <td>
+
+           <a href="{% url 'inventory_detail' item.pk %}">
+             {{ item.name }}
+           </a>
+          </td>
+
         </div>
 
     </div>
