@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block title %}Supplier Details{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-primary text-white">
+            <h3 class="mb-0">Supplier Details</h3>
+        </div>
+
+        <div class="card-body">
+
+            <table class="table">
+
+                <tr>
+                    <th width="30%">Name</th>
+                    <td>{{ supplier.name }}</td>
+                </tr>
+
+                <tr>
+                    <th>Contact Person</th>
+                    <td>{{ supplier.contact_person|default:"-" }}</td>
+                </tr>
+
+                <tr>
+                    <th>Email</th>
+                    <td>{{ supplier.email|default:"-" }}</td>
+                </tr>
+
+                <tr>
+                    <th>Phone</th>
+                    <td>{{ supplier.phone }}</td>
+                </tr>
+
+            </table>
+
+                        <hr>
+
+<h4>Supplied Inventory Items</h4>
+
+{% if inventory_items %}
+
+<table class="table table-bordered mt-3">
+    <thead class="table-light">
+        <tr>
+            <th>Item</th>
+            <th>Quantity</th>
+            <th>Unit</th>
+            <th>Unit Price</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+    {% for item in inventory_items %}
+
+        <tr>
+            <td>{{ item.name }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.unit }}</td>
+            <td>Rs. {{ item.unit_price }}</td>
+        </tr>
+
+    {% endfor %}
+
+    </tbody>
+
+</table>
+
+{% else %}
+
+<p class="text-muted">
+    This supplier has no inventory items yet.
+</p>
+
+{% endif %}
+
+
+            <div class="mt-4">
+                <a href="{% url 'supplier_update' supplier.pk %}" class="btn btn-warning">
+                    Edit
+                </a>
+
+                <a href="{% url 'supplier_delete' supplier.pk %}" class="btn btn-danger">
+                    Delete
+                </a>
+
+                <a href="{% url 'supplier_list' %}" class="btn btn-secondary">
+                    Back
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

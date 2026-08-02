@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}Suppliers{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Suppliers</h2>
+
+        <a href="{% url 'supplier_create' %}" class="btn btn-primary">
+            + Add Supplier
+        </a>
+    </div>
+
+    {% if suppliers %}
+    <div class="card shadow-sm">
+        <div class="card-body">
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Name</th>
+                            <th>Contact Person</th>
+                            <th>Phone</th>
+                            <th>Email</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        {% for supplier in suppliers %}
+                        <tr>
+
+                            <td>{{ supplier.name }}</td>
+
+                            <td>{{ supplier.contact_person }}</td>
+
+                            <td>{{ supplier.phone }}</td>
+
+                            <td>{{ supplier.email }}</td>
+
+                            <td>
+                                <a href="{% url 'supplier_detail' supplier.pk %}" class="btn btn-sm btn-info">
+                                    View
+                                </a>
+
+                                <a href="{% url 'supplier_update' supplier.pk %}" class="btn btn-sm btn-warning">
+                                    Edit
+                                </a>
+
+                                <a href="{% url 'supplier_delete' supplier.pk %}" class="btn btn-sm btn-danger">
+                                    Delete
+                                </a>
+                            </td>
+
+                        </tr>
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+    {% else %}
+
+    <div class="alert alert-info">
+        No suppliers found.
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

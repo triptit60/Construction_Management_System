@@ -5,10 +5,59 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.shortcuts import render, redirect
 from .forms import InventoryTransactionForm
 
-from .forms import InventoryForm
-from .models import InventoryItem,InventoryTransaction
+from .forms import InventoryForm,SupplierForm
+from .models import InventoryItem,InventoryTransaction,Supplier
 from django.db.models import F
 # Create your views here.
+
+
+
+def supplier_list(request):
+    suppliers = Supplier.objects.all()
+    return render(request, 'supplier/supplier_list.html', {'suppliers': suppliers})
+
+
+def supplier_create(request):
+    if request.method == "POST":
+        form = SupplierForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('supplier_list')
+    else:
+        form = SupplierForm()
+    return render(request, 'supplier/supplier_form.html', { 'form': form})
+
+
+def supplier_detail(request, pk):
+    supplier = get_object_or_404(Supplier, pk=pk)
+    inventory_items = InventoryItem.objects.filter(supplier=supplier)
+    return render(request, 'supplier/supplier_detail.html', { 'supplier': supplier, 'inventory_items': inventory_items })
+
+
+def supplier_update(request, pk):
+    supplier = get_object_or_404(Supplier, pk=pk)
+
+    if request.method == "POST":
+        form = SupplierForm(request.POST, instance=supplier)
+        if form.is_valid():
+            form.save()
+            return redirect('supplier_detail', pk=pk)
+    else:
+        form = SupplierForm(instance=supplier)
+
+    return render(request, 'supplier/supplier_form.html', {'form': form})
+
+
+def supplier_delete(request, pk):
+    supplier = get_object_or_404(Supplier, pk=pk)
+
+    if request.method == "POST":
+        supplier.delete()
+        return redirect('supplier_list')
+
+    return render(request, 'supplier/supplier_confirm_delete.html', {'supplier': supplier})
+
+
 
 @login_required
 def inventory_detail(request, pk):
@@ -17,6 +66,7 @@ def inventory_detail(request, pk):
     transactions = (InventoryTransaction.objects.filter(item=item).order_by("-created_at"))
     context = {"item": item,"transactions": transactions,}
     return render(request, "inventory/inventory_detail.html", context)
+
 
 @login_required
 def transaction_create(request):
