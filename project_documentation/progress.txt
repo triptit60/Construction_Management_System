@@ -47,3 +47,14 @@ Tasks
 Expenses
 Inventory CRUD
 
+-----------------------Completed in Day 5-----------------
+ Built the Supplier CRUD module
+Supplier List
+Add Supplier
+Supplier Detail
+Edit Supplier
+Delete Supplier
+ Connected the Supplier module with the Inventory module.
+
+----------------------Completed in day 6-------------
+ Reports Dashboard
