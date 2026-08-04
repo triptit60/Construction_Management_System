@@ -56,5 +56,14 @@ Edit Supplier
 Delete Supplier
  Connected the Supplier module with the Inventory module.
 
+
 ----------------------Completed in day 6-------------
  Reports Dashboard
+
+
+
+ ----------------------Completed in Day 7--------------------------------
+ Reports Dashboard
+Inventory Report
+Expense Report
+Project Report planning (and confirmed it matches your model)

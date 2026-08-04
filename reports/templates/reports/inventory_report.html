@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block title %}Inventory Report{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <h2 class="mb-4">
+        Inventory Report
+    </h2>
+
+    <table class="table table-bordered table-striped">
+
+        <thead class="table-dark">
+
+        <tr>
+            <th>Material</th>
+            <th>Project</th>
+            <th>Supplier</th>
+            <th>Quantity</th>
+            <th>Unit</th>
+            <th>Unit Price</th>
+            <th>Total Value</th>
+            <th>Status</th>
+        </tr>
+
+        </thead>
+
+        <tbody>
+
+        {% for item in inventory %}
+
+        <tr>
+
+            <td>{{ item.name }}</td>
+
+            <td>
+                {% if item.project %}
+                    {{ item.project.name }}
+                {% else %}
+                    -
+                {% endif %}
+            </td>
+
+            <td>{{ item.supplier.name }}</td>
+
+            <td>{{ item.quantity }}</td>
+
+            <td>{{ item.unit }}</td>
+
+            <td>Rs. {{ item.unit_price }}</td>
+
+            <td>Rs. {{ item.total_value }}</td>
+
+            <td>
+                {% if item.is_low_stock %}
+                    <span class="badge bg-danger">
+                        Low Stock
+                    </span>
+                {% else %}
+                    <span class="badge bg-success">
+                        In Stock
+                    </span>
+                {% endif %}
+            </td>
+
+        </tr>
+
+        {% empty %}
+
+        <tr>
+            <td colspan="8" class="text-center">
+                No inventory items found.
+            </td>
+        </tr>
+
+        {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}

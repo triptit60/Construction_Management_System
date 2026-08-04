@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}Expense Report{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <h2 class="mb-4">
+        Expense Report
+    </h2>
+
+    <table class="table table-bordered table-striped">
+
+        <thead class="table-dark">
+
+            <tr>
+                <th>Date</th>
+                <th>Project</th>
+                <th>Category</th>
+                <th>Amount</th>
+                <th>Description</th>
+                <th>Logged By</th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+        {% for expense in expenses %}
+
+            <tr>
+
+                <td>{{ expense.date_incurred }}</td>
+
+                <td>{{ expense.project.name }}</td>
+
+                <td>{{ expense.get_category_display }}</td>
+
+                <td>Rs. {{ expense.amount }}</td>
+
+                <td>{{ expense.description }}</td>
+
+                 <td>
+                   {% if expense.logged_by %}
+                    {{ expense.logged_by }}
+                 {% else %}
+                   -
+                 {% endif %}
+                 
+                </td>
+
+            </tr>
+
+        {% empty %}
+
+            <tr>
+                <td colspan="6" class="text-center">
+                    No expense records found.
+                </td>
+            </tr>
+
+        {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}
