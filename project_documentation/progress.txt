@@ -67,3 +67,13 @@ Delete Supplier
 Inventory Report
 Expense Report
 Project Report planning (and confirmed it matches your model)
+
+
+-----------------------Completed in Day 8---------------------------
+ Reports Dashboard
+ Inventory Report
+ Expense Report
+ Project Report
+ Inventory Filters
+ Expense Filters
+ Project Filters

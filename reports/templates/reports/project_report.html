@@ -10,6 +10,79 @@
         Project Report
     </h2>
 
+            <form method="GET" class="row g-3 mb-4">
+
+    <!-- Status -->
+    <div class="col-md-3">
+        <label class="form-label">Status</label>
+        <select name="status" class="form-select">
+            <option value="">All Statuses</option>
+
+            {% for value, label in statuses %}
+                <option value="{{ value }}"
+                    {% if request.GET.status == value %}
+                        selected
+                    {% endif %}>
+                    {{ label }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <!-- Manager -->
+    <div class="col-md-3">
+        <label class="form-label">Manager</label>
+        <select name="manager" class="form-select">
+            <option value="">All Managers</option>
+
+            {% for manager in managers %}
+                <option value="{{ manager.id }}"
+                    {% if request.GET.manager == manager.id|stringformat:"s" %}
+                        selected
+                    {% endif %}>
+                    {{ manager.get_full_name|default:manager.username }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <!-- Start Date -->
+    <div class="col-md-2">
+        <label class="form-label">Start From</label>
+        <input
+            type="date"
+            name="start_date"
+            class="form-control"
+            value="{{ request.GET.start_date }}"
+        >
+    </div>
+
+    <!-- End Date -->
+    <div class="col-md-2">
+        <label class="form-label">End Before</label>
+        <input
+            type="date"
+            name="end_date"
+            class="form-control"
+            value="{{ request.GET.end_date }}"
+        >
+    </div>
+
+    <!-- Filter Button -->
+    <div class="col-md-2 d-flex align-items-end">
+        <button type="submit" class="btn btn-primary w-100">
+            Filter
+        </button>
+    </div>
+
+</form>
+
+<div class="mb-3">
+    <a href="{% url 'reports:project_report' %}" class="btn btn-secondary">
+        Reset Filters
+    </a>
+</div>
+
     <table class="table table-bordered table-striped">
 
         <thead class="table-dark">

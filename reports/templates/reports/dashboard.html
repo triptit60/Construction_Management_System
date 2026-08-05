@@ -87,7 +87,7 @@
                 <p class="card-text">
                     View inventory items, stock status, and total inventory value.
                 </p>
-                <a href="{% url 'inventory_report' %}" class="btn btn-primary">
+                <a href="{% url 'reports:inventory_report' %}" class="btn btn-primary">
                     View Report
                 </a>
             </div>
@@ -102,7 +102,7 @@
                 <p class="card-text">
                     Review expenses by project, category, and date.
                 </p>
-                <a href="{% url 'expense_report' %}" class="btn btn-success">
+                <a href="{% url 'reports:expense_report' %}" class="btn btn-success">
                     View Report
                 </a>
             </div>
@@ -117,7 +117,7 @@
                 <p class="card-text">
                     Track project progress, status, and budgets.
                 </p>
-                <a href="{% url 'project_report' %}" class="btn btn-dark">
+                <a href="{% url 'reports:project_report' %}" class="btn btn-dark">
                     View Report
                 </a>
             </div>

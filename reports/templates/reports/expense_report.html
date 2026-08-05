@@ -10,6 +10,82 @@
         Expense Report
     </h2>
 
+<form method="GET" class="row g-3 mb-4">
+
+    <!-- Project -->
+    <div class="col-md-3">
+        <label class="form-label">Project</label>
+        <select name="project" class="form-select">
+            <option value="">All Projects</option>
+
+            {% for project in projects %}
+                <option value="{{ project.id }}"
+                    {% if request.GET.project == project.id|stringformat:"s" %}
+                        selected
+                    {% endif %}>
+                    {{ project.name }}
+                </option>
+            {% endfor %}
+
+        </select>
+    </div>
+
+    <!-- Category -->
+    <div class="col-md-3">
+        <label class="form-label">Category</label>
+        <select name="category" class="form-select">
+            <option value="">All Categories</option>
+
+            {% for value, label in categories %}
+                <option value="{{ value }}"
+                    {% if request.GET.category == value %}
+                        selected
+                    {% endif %}>
+                    {{ label }}
+                </option>
+            {% endfor %}
+
+        </select>
+    </div>
+
+    <!-- Date From -->
+    <div class="col-md-2">
+        <label class="form-label">From</label>
+        <input
+            type="date"
+            name="date_from"
+            class="form-control"
+            value="{{ request.GET.date_from }}"
+        >
+    </div>
+
+    <!-- Date To -->
+    <div class="col-md-2">
+        <label class="form-label">To</label>
+        <input
+            type="date"
+            name="date_to"
+            class="form-control"
+            value="{{ request.GET.date_to }}"
+        >
+    </div>
+
+    <!-- Filter Button -->
+    <div class="col-md-2 d-flex align-items-end">
+        <button type="submit" class="btn btn-primary w-100">
+            Filter
+        </button>
+    </div>
+
+</form>
+
+<div class="mb-3">
+    <a href="{% url 'reports:expense_report' %}" class="btn btn-secondary">
+        Reset Filters
+    </a>
+</div>
+
+
     <table class="table table-bordered table-striped">
 
         <thead class="table-dark">
@@ -33,7 +109,13 @@
 
                 <td>{{ expense.date_incurred }}</td>
 
-                <td>{{ expense.project.name }}</td>
+                <td>
+                   {% if expense.project %}
+                    {{ expense.project.name }}
+                  {% else %}
+                    -
+                 {% endif %}
+                </td>
 
                 <td>{{ expense.get_category_display }}</td>
 

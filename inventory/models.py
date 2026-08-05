@@ -22,9 +22,9 @@ class InventoryItem(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
-
+    @property
     def total_value(self):
-        return self.quantity * self.unit_price
+     return self.quantity * self.unit_price
 
     @property
     def is_low_stock(self):
