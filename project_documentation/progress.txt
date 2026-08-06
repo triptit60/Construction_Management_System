@@ -77,3 +77,18 @@ Project Report planning (and confirmed it matches your model)
  Inventory Filters
  Expense Filters
  Project Filters
+
+ --------------------------ompleted in day 9--------------------------------------
+ Reports Dashboard
+ Project Report
+ Expense Report
+ Inventory Report
+Project Filters
+Expense Filters
+ Inventory Filters
+ Project Excel Export
+ Expense Excel Export
+ Inventory Excel Export
+ Project PDF Export
+ Expense PDF Export
+ Inventory PDF Export
