@@ -76,9 +76,19 @@
     </div>
 
 </form>
-
 <div class="mb-3">
-    <a href="{% url 'reports:project_report' %}" class="btn btn-secondary">
+    <a href="{% url 'reports:export_project_excel' %}?{{ request.GET.urlencode }}"
+       class="btn btn-success">
+        Export Excel
+    </a>
+
+    <a href="{% url 'reports:export_project_pdf' %}?{{ request.GET.urlencode }}"
+       class="btn btn-danger">
+        Export PDF
+    </a>
+
+    <a href="{% url 'reports:project_report' %}"
+       class="btn btn-secondary">
         Reset Filters
     </a>
 </div>
