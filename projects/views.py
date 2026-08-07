@@ -1,13 +1,16 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django import forms
+
 from .models import Project,Task
 from .forms import ProjectForm,TaskForm
+
+from accounts.decorators import role_required
 
 # Create your views here.
 
 @login_required
+@role_required(['ADMIN', 'PROJECT_MANAGER'])
 def project_create(request):
     if request.method == "POST":
         form = ProjectForm(request.POST)
@@ -31,7 +34,9 @@ def project_create(request):
     })
 
 
+
 @login_required
+@role_required([ 'ADMIN', 'PROJECT_MANAGER', 'SITE_ENGINEER', 'ACCOUNTANT' ])
 def project_list(request):
     projects = Project.objects.all().order_by("-created_at")
 
@@ -40,7 +45,9 @@ def project_list(request):
     })
 
 
+
 @login_required
+@role_required([ 'ADMIN', 'PROJECT_MANAGER', 'SITE_ENGINEER', 'ACCOUNTANT' ])
 def project_detail(request, pk):
     project = get_object_or_404(Project, pk=pk)
 
@@ -51,6 +58,7 @@ def project_detail(request, pk):
 
 
 @login_required
+@role_required(['ADMIN', 'PROJECT_MANAGER'])
 def project_update(request, pk):
     project = get_object_or_404(Project, pk=pk)
 
@@ -73,6 +81,7 @@ def project_update(request, pk):
 
 
 @login_required
+@role_required(['ADMIN', 'PROJECT_MANAGER'])
 def project_delete(request, pk):
     project = get_object_or_404(Project, pk=pk)
 
@@ -89,6 +98,7 @@ def project_delete(request, pk):
 
 
 @login_required
+@role_required([ 'ADMIN', 'PROJECT_MANAGER', 'SITE_ENGINEER', 'ACCOUNTANT' ])
 def project_dashboard(request, pk):
     project = get_object_or_404(Project, pk=pk)  
     tasks = project.tasks.all()
@@ -117,6 +127,7 @@ def project_dashboard(request, pk):
 
 
 @login_required
+@role_required([ 'ADMIN', 'PROJECT_MANAGER', 'SITE_ENGINEER' ])
 def task_create(request, project_id):
     project = get_object_or_404(Project, pk=project_id)
 
@@ -145,7 +156,9 @@ def task_create(request, project_id):
     )
 
 
+
 @login_required
+@role_required([ 'ADMIN', 'PROJECT_MANAGER', 'SITE_ENGINEER', 'ACCOUNTANT' ])
 def task_list(request, project_id):
     project = get_object_or_404(Project, pk=project_id)
 
@@ -163,7 +176,9 @@ def task_list(request, project_id):
     )
 
 
+
 @login_required
+@role_required([ 'ADMIN', 'PROJECT_MANAGER', 'SITE_ENGINEER', 'ACCOUNTANT' ])
 def task_detail(request, project_id, pk):
     project = get_object_or_404(Project, pk=project_id)
     task = get_object_or_404(Task,pk=pk,project=project,)
@@ -172,6 +187,7 @@ def task_detail(request, project_id, pk):
 
 
 @login_required
+@role_required([ 'ADMIN', 'PROJECT_MANAGER', 'SITE_ENGINEER',  ])
 def task_update(request, project_id, pk):
     project = get_object_or_404(Project, pk=project_id)
     task = get_object_or_404(Task,pk=pk,project=project,)
@@ -186,7 +202,9 @@ def task_update(request, project_id, pk):
     return render( request,"Task/task_form.html",{"form": form,"project": project,"task": task,},)
 
 
+
 @login_required
+@role_required([ 'ADMIN', 'PROJECT_MANAGER', 'SITE_ENGINEER' ])
 def task_delete(request, project_id, pk):
     project = get_object_or_404(Project, pk=project_id)
     task = get_object_or_404(Task,pk=pk, project=project,)

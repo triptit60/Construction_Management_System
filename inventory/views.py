@@ -10,13 +10,26 @@ from .models import InventoryItem,InventoryTransaction,Supplier
 from django.db.models import F
 # Create your views here.
 
+from accounts.decorators import role_required
 
 
+@login_required
+@role_required([
+    'ADMIN',
+    'PROJECT_MANAGER',
+    'SITE_ENGINEER',
+    'ACCOUNTANT'
+])
 def supplier_list(request):
     suppliers = Supplier.objects.all()
     return render(request, 'supplier/supplier_list.html', {'suppliers': suppliers})
 
 
+@login_required
+@role_required([
+    'ADMIN',
+    'SITE_ENGINEER'
+])
 def supplier_create(request):
     if request.method == "POST":
         form = SupplierForm(request.POST)
@@ -28,12 +41,25 @@ def supplier_create(request):
     return render(request, 'supplier/supplier_form.html', { 'form': form})
 
 
+
+@login_required
+@role_required([
+    'ADMIN',
+    'PROJECT_MANAGER',
+    'SITE_ENGINEER',
+    'ACCOUNTANT'
+])
 def supplier_detail(request, pk):
     supplier = get_object_or_404(Supplier, pk=pk)
     inventory_items = InventoryItem.objects.filter(supplier=supplier)
     return render(request, 'supplier/supplier_detail.html', { 'supplier': supplier, 'inventory_items': inventory_items })
 
 
+@login_required
+@role_required([
+    'ADMIN',
+    'SITE_ENGINEER'
+])
 def supplier_update(request, pk):
     supplier = get_object_or_404(Supplier, pk=pk)
 
@@ -48,6 +74,12 @@ def supplier_update(request, pk):
     return render(request, 'supplier/supplier_form.html', {'form': form})
 
 
+
+@login_required
+@role_required([
+    'ADMIN',
+    'SITE_ENGINEER'
+])
 def supplier_delete(request, pk):
     supplier = get_object_or_404(Supplier, pk=pk)
 
@@ -60,6 +92,12 @@ def supplier_delete(request, pk):
 
 
 @login_required
+@role_required([
+    'ADMIN',
+    'PROJECT_MANAGER',
+    'SITE_ENGINEER',
+    'ACCOUNTANT'
+])
 def inventory_detail(request, pk):
     item = get_object_or_404(InventoryItem, pk=pk)
 
@@ -69,6 +107,10 @@ def inventory_detail(request, pk):
 
 
 @login_required
+@role_required([
+    'ADMIN',
+    'SITE_ENGINEER'
+])
 def transaction_create(request):
     if request.method == "POST":
         form = InventoryTransactionForm(request.POST)
@@ -103,6 +145,12 @@ def transaction_create(request):
 
 
 @login_required
+@role_required([
+    'ADMIN',
+    'PROJECT_MANAGER',
+    'SITE_ENGINEER',
+    'ACCOUNTANT'
+])
 def transaction_list(request):
     transactions = InventoryTransaction.objects.select_related("item").order_by("-created_at")
 
@@ -110,7 +158,14 @@ def transaction_list(request):
         "transactions": transactions,})
 
 
+
 @login_required
+@role_required([
+    'ADMIN',
+    'PROJECT_MANAGER',
+    'SITE_ENGINEER',
+    'ACCOUNTANT'
+])
 def inventory_dashboard(request):
     items = InventoryItem.objects.all()
 
@@ -138,6 +193,12 @@ def inventory_dashboard(request):
 
 
 @login_required
+@role_required([
+    'ADMIN',
+    'PROJECT_MANAGER',
+    'SITE_ENGINEER',
+    'ACCOUNTANT'
+])
 def inventory_list(request):
     items = InventoryItem.objects.all().order_by("-created_at")
     total_materials = items.count()
@@ -153,6 +214,10 @@ def inventory_list(request):
 
 
 @login_required
+@role_required([
+    'ADMIN',
+    'SITE_ENGINEER'
+])
 def inventory_create(request):
     if request.method == "POST":
         form = InventoryForm(request.POST)
@@ -168,6 +233,12 @@ def inventory_create(request):
 
 
 @login_required
+@role_required([
+    'ADMIN',
+    'PROJECT_MANAGER',
+    'SITE_ENGINEER',
+    'ACCOUNTANT'
+])
 def inventory_detail(request, pk):
     item = get_object_or_404(InventoryItem, pk=pk)
 
@@ -177,6 +248,10 @@ def inventory_detail(request, pk):
 
 
 @login_required
+@role_required([
+    'ADMIN',
+    'SITE_ENGINEER'
+])
 def inventory_update(request, pk):
     item = get_object_or_404(InventoryItem, pk=pk)
 
@@ -194,6 +269,10 @@ def inventory_update(request, pk):
 
 
 @login_required
+@role_required([
+    'ADMIN',
+    'SITE_ENGINEER'
+])
 def inventory_delete(request, pk):
     item = get_object_or_404(InventoryItem, pk=pk)
 

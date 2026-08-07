@@ -12,7 +12,10 @@ from django.db.models import Sum, Avg, Max
 from django.utils import timezone
 # Create your views here.
 
+from accounts.decorators import role_required
+
 @login_required
+@role_required([ 'ADMIN', 'ACCOUNTANT' ])
 def expense_create(request):
     if request.method == "POST":
         form = ExpenseForm(request.POST)
@@ -29,7 +32,9 @@ def expense_create(request):
     return render(request, "finance/expense_form.html", {"form": form})
 
 
+
 @login_required
+@role_required([ 'ADMIN', 'PROJECT_MANAGER', 'SITE_ENGINEER', 'ACCOUNTANT' ])
 def expense_list(request):
     expenses = Expense.objects.select_related(
         "project", "logged_by"
@@ -57,7 +62,9 @@ def expense_list(request):
     return render(request, "finance/expense_list.html", context)
 
 
+
 @login_required
+@role_required([ 'ADMIN', 'PROJECT_MANAGER', 'SITE_ENGINEER', 'ACCOUNTANT' ])
 def expense_detail(request, pk):
     expense = get_object_or_404(Expense, pk=pk)
     return render(request, "finance/expense_detail.html", {"expense": expense})
@@ -65,6 +72,7 @@ def expense_detail(request, pk):
 
 
 @login_required
+@role_required([ 'ADMIN', 'ACCOUNTANT' ])
 def expense_update(request, pk):
     expense = get_object_or_404(Expense, pk=pk)
     if request.method == "POST":
@@ -80,7 +88,9 @@ def expense_update(request, pk):
     return render(request, "finance/expense_form.html", {"form": form})
 
 
+
 @login_required
+@role_required([ 'ADMIN', 'ACCOUNTANT' ])
 def expense_delete(request, pk):
     expense = get_object_or_404(Expense, pk=pk)
     if request.method == "POST":
@@ -92,8 +102,8 @@ def expense_delete(request, pk):
 
 
 @login_required
+@role_required([ 'ADMIN', 'PROJECT_MANAGER', 'SITE_ENGINEER', 'ACCOUNTANT' ])
 def finance_dashboard(request):
-
     total_expenses = Expense.objects.aggregate(total=Sum("amount"))["total"] or 0
     monthly_expenses = Expense.objects.filter(
         date_incurred__month=timezone.now().month,

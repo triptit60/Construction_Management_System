@@ -78,7 +78,7 @@ Project Report planning (and confirmed it matches your model)
  Expense Filters
  Project Filters
 
- --------------------------ompleted in day 9--------------------------------------
+ --------------------------Completed in day 9--------------------------------------
  Reports Dashboard
  Project Report
  Expense Report
@@ -92,3 +92,15 @@ Expense Filters
  Project PDF Export
  Expense PDF Export
  Inventory PDF Export
+
+
+----------------------Completed in day 10---------------------------------
+User Roles          
+RBAC Decorator     
+Projects            
+Tasks               
+Inventory           
+Finance            
+Reports             
+Navigation/UI       
+    
